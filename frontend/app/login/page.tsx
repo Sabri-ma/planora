@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import { login } from "@/services/auth";
 import { ArrowLeft, Sparkles } from "lucide-react";
 
 export default function LoginPage() {
@@ -21,18 +21,12 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/v1/auth/login/",
-        {
-          username,
-          password,
-        }
-      );
+      await login({
+        username,
+        password,
+      });
 
-      localStorage.setItem("access_token", response.data.access);
-      localStorage.setItem("refresh_token", response.data.refresh);
-
-      router.push("/");
+      router.push("/dashboard");
     } catch {
       setError("Invalid username or password.");
     } finally {

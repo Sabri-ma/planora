@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import { login, register } from "@/services/auth";
 import { ArrowLeft, Sparkles } from "lucide-react";
 
 export default function RegisterPage() {
@@ -41,30 +41,14 @@ export default function RegisterPage() {
     }
 
     try {
-      await axios.post(
-        "http://127.0.0.1:8000/api/v1/auth/register/",
-        form
-      );
+      await register(form);
 
-      const loginResponse = await axios.post(
-        "http://127.0.0.1:8000/api/v1/auth/login/",
-        {
-          username: form.username,
-          password: form.password,
-        }
-      );
+      await login({
+        username: form.username,
+        password: form.password,
+      });
 
-      localStorage.setItem(
-        "access_token",
-        loginResponse.data.access
-      );
-
-      localStorage.setItem(
-        "refresh_token",
-        loginResponse.data.refresh
-      );
-
-      router.push("/");
+      router.push("/dashboard");
     } catch (err: any) {
       const data = err.response?.data;
 
@@ -74,6 +58,8 @@ export default function RegisterPage() {
         setError(data.email[0]);
       } else if (data?.password2) {
         setError(data.password2[0]);
+      } else if (data?.password) {
+        setError(data.password[0]);
       } else {
         setError("Could not create your account.");
       }
