@@ -25,4 +25,14 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
     ),
+
+    path(
+    "api/v1/events/",
+    include("apps.events.urls"),
+    ),
+
+    path(
+    "api/v1/tasks/",
+    include("apps.tasks.urls"),
+    ),
 ]
