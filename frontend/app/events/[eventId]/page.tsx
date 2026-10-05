@@ -108,6 +108,11 @@ export default function EventPage() {
     router.push(`/events/${event.id}/guests`);
     return;
     }
+
+    if (item === "Budget") {
+    router.push(`/events/${event.id}/budget`);
+    return;
+    }
   };
 
   return (

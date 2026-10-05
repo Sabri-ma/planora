@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "apps.events",
     "apps.tasks",
     "apps.guests",
+    "apps.budgets",
 ]
 
 
