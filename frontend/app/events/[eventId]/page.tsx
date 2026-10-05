@@ -95,16 +95,19 @@ export default function EventPage() {
 
   const handleMenuClick = (item: string) => {
     if (item === "Overview") {
-      router.push(`/events/${event.id}`);
-      return;
+    router.push(`/events/${event.id}`);
+    return;
     }
 
     if (item === "Tasks") {
-      router.push(`/events/${event.id}/tasks`);
-      return;
+    router.push(`/events/${event.id}/tasks`);
+    return;
     }
 
-    // The other sections will be connected as we build them.
+    if (item === "Guests") {
+    router.push(`/events/${event.id}/guests`);
+    return;
+    }
   };
 
   return (

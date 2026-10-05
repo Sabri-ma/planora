@@ -35,4 +35,9 @@ urlpatterns = [
     "api/v1/tasks/",
     include("apps.tasks.urls"),
     ),
+
+    path(
+    "api/v1/guests/",
+    include("apps.guests.urls"),
+    ),
 ]
