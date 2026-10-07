@@ -45,4 +45,19 @@ urlpatterns = [
     "api/v1/budgets/",
     include("apps.budgets.urls"),
     ),
+
+    path(
+    "api/v1/vendors/",
+    include("apps.vendors.urls"),
+    ),
+
+    path(
+    "api/v1/invitations/",
+    include("apps.invitations.urls"),
+    ),
+
+    path(
+    "api/v1/seating/",
+    include("apps.seating.urls"),
+    ),
 ]

@@ -113,6 +113,27 @@ export default function EventPage() {
     router.push(`/events/${event.id}/budget`);
     return;
     }
+
+    if (item === "Vendors") {
+    router.push(`/events/${event.id}/vendors`);
+    return;
+    }
+
+    if (item === "Invitations") {
+    router.push(`/events/${event.id}/invitations`);
+    return;
+    }
+
+    if (item === "Seating") {
+    router.push(`/events/${event.id}/seating`);
+    return;
+    }
+    
+    if (item === "Settings") {
+    router.push(`/events/${event.id}/settings`);
+    return;
+    }
+
   };
 
   return (
