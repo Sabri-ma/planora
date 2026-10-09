@@ -1,5 +1,10 @@
-from rest_framework import generics, permissions
+from rest_framework import generics
+from rest_framework.exceptions import PermissionDenied
 
+from apps.events.permissions import (
+    EventContentPermission,
+    can_manage_event_content,
+)
 from .models import BudgetItem
 from .serializers import BudgetItemSerializer
 
@@ -9,7 +14,7 @@ class BudgetItemListCreateView(
 ):
     serializer_class = BudgetItemSerializer
     permission_classes = [
-        permissions.IsAuthenticated
+        EventContentPermission
     ]
 
     def get_queryset(self):
@@ -19,7 +24,10 @@ class BudgetItemListCreateView(
             )
             .select_related("event")
             .distinct()
-            .order_by("due_date", "-created_at")
+            .order_by(
+                "due_date",
+                "-created_at",
+            )
         )
 
         event_id = self.request.query_params.get(
@@ -53,13 +61,26 @@ class BudgetItemListCreateView(
 
         return queryset
 
+    def perform_create(self, serializer):
+        event = serializer.validated_data["event"]
+
+        if not can_manage_event_content(
+            self.request.user,
+            event,
+        ):
+            raise PermissionDenied(
+                "You do not have permission to create budget items for this event."
+            )
+
+        serializer.save()
+
 
 class BudgetItemDetailView(
     generics.RetrieveUpdateDestroyAPIView
 ):
     serializer_class = BudgetItemSerializer
     permission_classes = [
-        permissions.IsAuthenticated
+        EventContentPermission
     ]
 
     def get_queryset(self):

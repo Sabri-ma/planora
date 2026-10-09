@@ -1,0 +1,58 @@
+services:
+  db:
+    image: postgres:17
+    container_name: planora_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: planora_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - planora_postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    container_name: planora_backend
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      SECRET_KEY: django-insecure-planora-docker-dev-key
+      DEBUG: "True"
+      DB_NAME: planora_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    command: >
+      sh -c "
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000
+      "
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: planora_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      NEXT_PUBLIC_API_URL: http://127.0.0.1:8000/api/v1
+    command: npm run dev -- -H 0.0.0.0
+
+volumes:
+  planora_postgres_data:

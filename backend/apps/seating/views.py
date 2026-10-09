@@ -1,5 +1,10 @@
-from rest_framework import generics, permissions
+from rest_framework import generics
+from rest_framework.exceptions import PermissionDenied
 
+from apps.events.permissions import (
+    EventContentPermission,
+    can_manage_event_content,
+)
 from .models import SeatAssignment, SeatingTable
 from .serializers import (
     SeatAssignmentSerializer,
@@ -12,7 +17,7 @@ class SeatingTableListCreateView(
 ):
     serializer_class = SeatingTableSerializer
     permission_classes = [
-        permissions.IsAuthenticated
+        EventContentPermission
     ]
 
     def get_queryset(self):
@@ -38,13 +43,26 @@ class SeatingTableListCreateView(
 
         return queryset
 
+    def perform_create(self, serializer):
+        event = serializer.validated_data["event"]
+
+        if not can_manage_event_content(
+            self.request.user,
+            event,
+        ):
+            raise PermissionDenied(
+                "You do not have permission to create seating tables for this event."
+            )
+
+        serializer.save()
+
 
 class SeatingTableDetailView(
     generics.RetrieveUpdateDestroyAPIView
 ):
     serializer_class = SeatingTableSerializer
     permission_classes = [
-        permissions.IsAuthenticated
+        EventContentPermission
     ]
 
     def get_queryset(self):
@@ -64,7 +82,7 @@ class SeatAssignmentListCreateView(
 ):
     serializer_class = SeatAssignmentSerializer
     permission_classes = [
-        permissions.IsAuthenticated
+        EventContentPermission
     ]
 
     def get_queryset(self):
@@ -103,13 +121,26 @@ class SeatAssignmentListCreateView(
 
         return queryset
 
+    def perform_create(self, serializer):
+        table = serializer.validated_data["table"]
+
+        if not can_manage_event_content(
+            self.request.user,
+            table.event,
+        ):
+            raise PermissionDenied(
+                "You do not have permission to assign guests for this event."
+            )
+
+        serializer.save()
+
 
 class SeatAssignmentDetailView(
     generics.RetrieveUpdateDestroyAPIView
 ):
     serializer_class = SeatAssignmentSerializer
     permission_classes = [
-        permissions.IsAuthenticated
+        EventContentPermission
     ]
 
     def get_queryset(self):

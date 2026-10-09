@@ -46,12 +46,41 @@ class EventMemberListCreateView(APIView):
             many=True,
         )
 
-        return Response(
-            serializer.data
-        )
+        return Response(serializer.data)
 
     def post(self, request, event_id):
         event = self.get_event(event_id)
+
+        requester_membership = (
+            EventMembership.objects.filter(
+                event=event,
+                user=request.user,
+            ).first()
+        )
+
+        if requester_membership is None:
+            return Response(
+                {
+                    "detail": "You are not a member of this event."
+                },
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        requested_role = request.data.get(
+            "role",
+            EventMembership.Role.VIEWER,
+        )
+
+        if requester_membership.role == EventMembership.Role.ADMIN:
+            if requested_role == EventMembership.Role.ADMIN:
+                return Response(
+                    {
+                        "detail": (
+                            "Admins cannot create other admins."
+                        )
+                    },
+                    status=status.HTTP_403_FORBIDDEN,
+                )
 
         serializer = AddEventMemberSerializer(
             data=request.data,
@@ -67,14 +96,10 @@ class EventMemberListCreateView(APIView):
 
         membership = serializer.save()
 
-        response_serializer = (
+        return Response(
             EventMemberSerializer(
                 membership
-            )
-        )
-
-        return Response(
-            response_serializer.data,
+            ).data,
             status=status.HTTP_201_CREATED,
         )
 
@@ -154,17 +179,46 @@ class EventMemberDetailView(APIView):
                 status=status.HTTP_403_FORBIDDEN,
             )
 
-        if membership.role == (
-            EventMembership.Role.OWNER
+        if membership.role == EventMembership.Role.OWNER:
+            return Response(
+                {
+                    "detail": (
+                        "The owner role cannot be changed."
+                    )
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if (
+            requester_membership.role
+            == EventMembership.Role.ADMIN
+            and membership.role
+            == EventMembership.Role.ADMIN
         ):
             return Response(
                 {
                     "detail": (
-                        "The owner role cannot "
-                        "be changed."
+                        "Admins cannot modify other admins."
                     )
                 },
-                status=status.HTTP_400_BAD_REQUEST,
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        requested_role = request.data.get("role")
+
+        if (
+            requester_membership.role
+            == EventMembership.Role.ADMIN
+            and requested_role
+            == EventMembership.Role.ADMIN
+        ):
+            return Response(
+                {
+                    "detail": (
+                        "Admins cannot promote members to admin."
+                    )
+                },
+                status=status.HTTP_403_FORBIDDEN,
             )
 
         serializer = (
@@ -226,17 +280,29 @@ class EventMemberDetailView(APIView):
                 status=status.HTTP_403_FORBIDDEN,
             )
 
-        if membership.role == (
-            EventMembership.Role.OWNER
+        if membership.role == EventMembership.Role.OWNER:
+            return Response(
+                {
+                    "detail": (
+                        "The event owner cannot be removed."
+                    )
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if (
+            requester_membership.role
+            == EventMembership.Role.ADMIN
+            and membership.role
+            == EventMembership.Role.ADMIN
         ):
             return Response(
                 {
                     "detail": (
-                        "The event owner cannot "
-                        "be removed."
+                        "Admins cannot remove other admins."
                     )
                 },
-                status=status.HTTP_400_BAD_REQUEST,
+                status=status.HTTP_403_FORBIDDEN,
             )
 
         membership.delete()
