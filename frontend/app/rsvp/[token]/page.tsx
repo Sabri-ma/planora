@@ -6,6 +6,7 @@ import {
   CalendarDays,
   CheckCircle2,
   MapPin,
+  Sparkles,
   XCircle,
 } from "lucide-react";
 
@@ -101,28 +102,38 @@ export default function PublicRSVPPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#f8f5ef] px-6">
-        <p className="text-[#746f67]">
-          Loading invitation...
-        </p>
+      <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#08172F] px-6">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,166,70,0.20),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(29,78,216,0.28),transparent_32%)]" />
+
+        <div className="relative z-10 text-center">
+          <div className="mx-auto h-11 w-11 animate-spin rounded-full border-4 border-white/15 border-t-[#D4A646]" />
+
+          <p className="mt-5 text-sm font-medium text-white/70">
+            Loading invitation...
+          </p>
+        </div>
       </main>
     );
   }
 
   if (error && !invitation) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#f8f5ef] px-6">
-        <div className="w-full max-w-lg rounded-[28px] border border-[#e5ded3] bg-white p-8 text-center">
-          <XCircle
-            size={42}
-            className="mx-auto text-red-500"
-          />
+      <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#08172F] px-6 py-12">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,166,70,0.18),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(29,78,216,0.25),transparent_32%)]" />
 
-          <h1 className="mt-5 text-2xl font-semibold">
+        <div className="relative z-10 w-full max-w-lg rounded-[30px] border border-white/10 bg-white p-9 text-center shadow-[0_30px_90px_rgba(0,0,0,0.28)]">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50">
+            <XCircle
+              size={30}
+              className="text-red-500"
+            />
+          </div>
+
+          <h1 className="mt-6 text-2xl font-bold tracking-[-0.03em] text-[#08172F]">
             Invitation unavailable
           </h1>
 
-          <p className="mt-3 text-[#746f67]">
+          <p className="mt-3 text-[#667085]">
             {error}
           </p>
         </div>
@@ -136,37 +147,54 @@ export default function PublicRSVPPage() {
 
   if (submitted) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#f8f5ef] px-6 py-12">
-        <div className="w-full max-w-xl rounded-[32px] border border-[#e5ded3] bg-[#fffdf9] p-10 text-center shadow-sm">
-          {responseStatus === "confirmed" ? (
-            <CheckCircle2
-              size={52}
-              className="mx-auto text-green-600"
-            />
-          ) : (
-            <XCircle
-              size={52}
-              className="mx-auto text-[#9a7b4c]"
-            />
-          )}
+      <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#08172F] px-6 py-12">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,166,70,0.20),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(29,78,216,0.28),transparent_32%)]" />
 
-          <p className="mt-6 text-sm uppercase tracking-[0.16em] text-[#9a7b4c]">
+        <div className="absolute left-1/2 top-16 h-72 w-72 -translate-x-1/2 rounded-full bg-[#D4A646]/10 blur-3xl" />
+
+        <div className="relative z-10 w-full max-w-xl rounded-[34px] border border-white/10 bg-white p-10 text-center shadow-[0_30px_90px_rgba(0,0,0,0.30)]">
+          <div
+            className={`mx-auto flex h-16 w-16 items-center justify-center rounded-2xl ${
+              responseStatus === "confirmed"
+                ? "bg-[#eef4ff]"
+                : "bg-[#fff7e8]"
+            }`}
+          >
+            {responseStatus === "confirmed" ? (
+              <CheckCircle2
+                size={34}
+                className="text-[#1D4ED8]"
+              />
+            ) : (
+              <XCircle
+                size={34}
+                className="text-[#D4A646]"
+              />
+            )}
+          </div>
+
+          <p className="mt-7 text-xs font-bold uppercase tracking-[0.18em] text-[#b8862f]">
             RSVP received
           </p>
 
-          <h1 className="mt-2 text-3xl font-semibold">
+          <h1 className="mt-3 text-3xl font-bold tracking-[-0.04em] text-[#08172F]">
             {responseStatus === "confirmed"
               ? "See you there!"
               : "Thank you for letting us know"}
           </h1>
 
-          <p className="mt-4 text-[#746f67]">
+          <p className="mt-4 leading-7 text-[#667085]">
             Your response for{" "}
-            <strong>
+            <strong className="text-[#0F2B5B]">
               {invitation.event_name}
             </strong>{" "}
             has been saved.
           </p>
+
+          <div className="mt-8 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#98A2B3]">
+            <Sparkles size={14} />
+            Planora
+          </div>
         </div>
       </main>
     );
@@ -184,143 +212,172 @@ export default function PublicRSVPPage() {
       : "";
 
   return (
-    <main className="min-h-screen bg-[#f8f5ef] px-6 py-12">
-      <div className="mx-auto max-w-2xl">
+    <main className="relative min-h-screen overflow-hidden bg-[#08172F] px-4 py-8 sm:px-6 sm:py-12">
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-35"
+        style={{
+          backgroundImage:
+            "url('/images/event-hero.jpg')",
+        }}
+      />
+
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,17,38,0.62)_0%,rgba(8,23,47,0.92)_55%,rgba(8,23,47,1)_100%)]" />
+
+      <div className="absolute -right-20 top-10 h-80 w-80 rounded-full bg-[#D4A646]/15 blur-3xl" />
+      <div className="absolute -left-24 bottom-20 h-72 w-72 rounded-full bg-[#1D4ED8]/20 blur-3xl" />
+
+      <div className="relative z-10 mx-auto max-w-3xl">
         <div className="text-center">
-          <p className="text-sm font-medium uppercase tracking-[0.22em] text-[#9a7b4c]">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-[#E7C875] backdrop-blur-md">
+            <Sparkles size={20} />
+          </div>
+
+          <p className="mt-5 text-xs font-bold uppercase tracking-[0.24em] text-[#E7C875]">
             Planora Invitation
           </p>
 
-          <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">
+          <h1 className="mt-5 text-4xl font-bold tracking-[-0.05em] !text-white sm:text-5xl lg:text-6xl">
             {invitation.event_name}
           </h1>
 
-          <p className="mt-4 text-lg text-[#746f67]">
+          <p className="mt-4 text-base text-white/70 sm:text-lg">
             You&apos;re invited,{" "}
-            <strong className="text-[#1f1d1a]">
+            <strong className="font-semibold !text-white">
               {invitation.guest_name}
             </strong>
           </p>
         </div>
 
-        <div className="mt-10 rounded-[32px] border border-[#e5ded3] bg-[#fffdf9] p-8 shadow-sm sm:p-10">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-[20px] bg-[#f4efe7] p-5">
-              <CalendarDays size={20} />
+        <section className="mt-10 overflow-hidden rounded-[34px] border border-white/10 bg-white shadow-[0_30px_90px_rgba(0,0,0,0.32)]">
+          <div className="border-b border-[#e8edf5] bg-[#f9fbff] px-6 py-6 sm:px-9">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-[20px] border border-[#e2e7ef] bg-white p-5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#eef3fb] text-[#0F2B5B]">
+                  <CalendarDays size={19} />
+                </div>
 
-              <p className="mt-3 text-xs uppercase tracking-[0.12em] text-[#817b72]">
-                Date
-              </p>
+                <p className="mt-4 text-xs font-bold uppercase tracking-[0.14em] text-[#98A2B3]">
+                  Date
+                </p>
 
-              <p className="mt-1 font-medium">
-                {formattedDate}
-              </p>
+                <p className="mt-1 font-semibold text-[#08172F]">
+                  {formattedDate}
+                </p>
+              </div>
+
+              <div className="rounded-[20px] border border-[#e2e7ef] bg-white p-5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#fff7e8] text-[#b8862f]">
+                  <MapPin size={19} />
+                </div>
+
+                <p className="mt-4 text-xs font-bold uppercase tracking-[0.14em] text-[#98A2B3]">
+                  Location
+                </p>
+
+                <p className="mt-1 font-semibold text-[#08172F]">
+                  {invitation.event_location ||
+                    "To be announced"}
+                </p>
+              </div>
             </div>
 
-            <div className="rounded-[20px] bg-[#f4efe7] p-5">
-              <MapPin size={20} />
-
-              <p className="mt-3 text-xs uppercase tracking-[0.12em] text-[#817b72]">
-                Location
-              </p>
-
-              <p className="mt-1 font-medium">
-                {invitation.event_location ||
-                  "To be announced"}
-              </p>
-            </div>
+            {invitation.message && (
+              <div className="mt-6 rounded-[20px] border border-[#eadcb7] bg-[#fffaf0] p-5">
+                <p className="text-sm leading-7 text-[#5d6270] sm:text-base">
+                  “{invitation.message}”
+                </p>
+              </div>
+            )}
           </div>
 
-          {invitation.message && (
-            <div className="mt-7 border-l-2 border-[#b89b6b] pl-5">
-              <p className="leading-7 text-[#5f5a53]">
-                {invitation.message}
-              </p>
-            </div>
-          )}
-
-          <div className="mt-9">
-            <h2 className="text-2xl font-semibold">
-              Will you attend?
-            </h2>
-
-            <p className="mt-2 text-sm text-[#746f67]">
-              Please let the hosts know your
-              response.
-            </p>
-          </div>
-
-          <div className="mt-7 space-y-5">
+          <div className="px-6 py-7 sm:px-9 sm:py-9">
             <div>
-              <label className="mb-2 block text-sm font-medium">
-                Plus-one name
-              </label>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#b8862f]">
+                Your response
+              </p>
 
-              <input
-                type="text"
-                name="plus_one_name"
-                value={form.plus_one_name}
-                onChange={handleChange}
-                placeholder="Optional"
-                className="w-full rounded-2xl border border-[#ddd5ca] bg-white px-4 py-3 outline-none focus:border-[#a98b5d]"
-              />
+              <h2 className="mt-2 text-2xl font-bold tracking-[-0.03em] text-[#08172F]">
+                Will you attend?
+              </h2>
+
+              <p className="mt-2 text-sm text-[#667085]">
+                Please let the hosts know your response.
+              </p>
             </div>
 
-            <div>
-              <label className="mb-2 block text-sm font-medium">
-                Meal preference
-              </label>
+            <div className="mt-7 grid gap-5 sm:grid-cols-2">
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-[#344054]">
+                  Plus-one name
+                </label>
 
-              <input
-                type="text"
-                name="meal_preference"
-                value={form.meal_preference}
-                onChange={handleChange}
-                placeholder="Example: Vegetarian"
-                className="w-full rounded-2xl border border-[#ddd5ca] bg-white px-4 py-3 outline-none focus:border-[#a98b5d]"
-              />
+                <input
+                  type="text"
+                  name="plus_one_name"
+                  value={form.plus_one_name}
+                  onChange={handleChange}
+                  placeholder="Optional"
+                  className="w-full rounded-xl border border-[#dce3ee] bg-white px-4 py-3 text-[#111827] outline-none transition placeholder:text-[#B1B7C5] focus:border-[#D4A646] focus:ring-2 focus:ring-[#D4A646]/15"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-[#344054]">
+                  Meal preference
+                </label>
+
+                <input
+                  type="text"
+                  name="meal_preference"
+                  value={form.meal_preference}
+                  onChange={handleChange}
+                  placeholder="Example: Vegetarian"
+                  className="w-full rounded-xl border border-[#dce3ee] bg-white px-4 py-3 text-[#111827] outline-none transition placeholder:text-[#B1B7C5] focus:border-[#D4A646] focus:ring-2 focus:ring-[#D4A646]/15"
+                />
+              </div>
+            </div>
+
+            {error && (
+              <div className="mt-6 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                {error}
+              </div>
+            )}
+
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              <button
+                type="button"
+                disabled={submitting}
+                onClick={() =>
+                  handleRSVP("confirmed")
+                }
+                className="flex items-center justify-center gap-2 rounded-xl bg-[#0F2B5B] px-6 py-4 font-semibold !text-white shadow-[0_10px_26px_rgba(15,43,91,0.18)] transition hover:-translate-y-0.5 hover:bg-[#173B78] hover:!text-white disabled:translate-y-0 disabled:opacity-50"
+              >
+                <CheckCircle2 size={18} />
+
+                {submitting
+                  ? "Saving..."
+                  : "Yes, I’ll attend"}
+              </button>
+
+              <button
+                type="button"
+                disabled={submitting}
+                onClick={() =>
+                  handleRSVP("declined")
+                }
+                className="flex items-center justify-center gap-2 rounded-xl border border-[#dce3ee] bg-white px-6 py-4 font-semibold text-[#44506a] transition hover:border-[#9fb3d1] hover:bg-[#f8faff] hover:text-[#0F2B5B] disabled:opacity-50"
+              >
+                <XCircle size={18} />
+                I can&apos;t attend
+              </button>
             </div>
           </div>
+        </section>
 
-          {error && (
-            <div className="mt-6 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">
-              {error}
-            </div>
-          )}
-
-          <div className="mt-8 grid gap-3 sm:grid-cols-2">
-            <button
-              type="button"
-              disabled={submitting}
-              onClick={() =>
-                handleRSVP("confirmed")
-              }
-              className="flex items-center justify-center gap-2 rounded-full bg-[#1f1d1a] px-6 py-4 font-medium !text-white disabled:opacity-50"
-            >
-              <CheckCircle2 size={18} />
-
-              {submitting
-                ? "Saving..."
-                : "Yes, I’ll attend"}
-            </button>
-
-            <button
-              type="button"
-              disabled={submitting}
-              onClick={() =>
-                handleRSVP("declined")
-              }
-              className="flex items-center justify-center gap-2 rounded-full border border-[#d7cec1] bg-white px-6 py-4 font-medium text-[#4f4942] disabled:opacity-50"
-            >
-              <XCircle size={18} />
-              I can&apos;t attend
-            </button>
-          </div>
-        </div>
-
-        <p className="mt-8 text-center text-xs text-[#999188]">
+        <div className="mt-7 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/45">
+          <Sparkles size={13} />
           Invitation managed with Planora
-        </p>
+        </div>
       </div>
     </main>
   );
