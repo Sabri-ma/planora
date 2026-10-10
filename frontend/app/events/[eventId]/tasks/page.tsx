@@ -408,55 +408,42 @@ export default function EventTasksPage() {
   return (
 
     <main className="min-h-screen bg-[#f6f8fc]">
+<section className="mx-auto max-w-[1500px] px-5 py-6 sm:px-7 lg:px-10 lg:py-8">
 
-      <header className="border-b border-[#e2e7ef] bg-white">
+        <div
+          className="relative overflow-hidden rounded-[30px] bg-cover bg-center px-6 py-7 text-white shadow-[0_24px_70px_rgba(8,23,47,0.22)] sm:px-8 sm:py-8"
+          style={{
+            backgroundImage:
+              "linear-gradient(90deg, rgba(5,17,38,0.92) 0%, rgba(6,24,55,0.74) 58%, rgba(6,24,55,0.46) 100%), url('/images/event-hero.jpg')",
+          }}
+        >
+          <div className="absolute -right-16 -top-20 h-56 w-56 rounded-full bg-[#D4A646]/20 blur-3xl" />
+          <div className="absolute -bottom-20 left-1/3 h-48 w-48 rounded-full bg-[#1D4ED8]/20 blur-3xl" />
 
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-<button
+          <div className="relative z-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] !text-[#E7C875]">
+                Planning
+              </p>
 
-            type="button"
+              <h1 className="mt-2 text-4xl font-bold tracking-[-0.04em] !text-white">
+                Tasks
+              </h1>
 
-            onClick={() => setTaskModalOpen(true)}
+              <p className="mt-3 max-w-2xl text-sm leading-6 !text-white/70 sm:text-base">
+                Keep deadlines, priorities and every important detail moving toward the big day.
+              </p>
+            </div>
 
-            className="flex items-center gap-2 rounded-full bg-[#0F2B5B] px-5 py-2.5 text-sm font-medium !text-white transition hover:bg-[#173B78]"
-
-          >
-
-            <Plus size={16} />
-
-            New task
-
-          </button>
-
-        </div>
-
-      </header>
-
-      <section className="mx-auto max-w-7xl px-6 py-12">
-
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#b8862f]">
-              Planning
-            </p>
-
-            <h1 className="mt-2 text-4xl font-bold tracking-[-0.04em] text-[#08172F]">
-              Tasks
-            </h1>
-
-            <p className="mt-3 text-[#667085]">
-              Track everything that needs to be done for this event.
-            </p>
+            <button
+              type="button"
+              onClick={() => setTaskModalOpen(true)}
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#D4A646] px-5 py-3 text-sm font-bold !text-[#08172F] shadow-[0_10px_28px_rgba(212,166,70,0.24)] transition hover:-translate-y-0.5 hover:bg-[#E7C875] hover:!text-[#08172F]"
+            >
+              <Plus size={16} />
+              New task
+            </button>
           </div>
-
-          <button
-            type="button"
-            onClick={() => setTaskModalOpen(true)}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0F2B5B] px-5 py-3 text-sm font-semibold !text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#173B78] hover:!text-white"
-          >
-            <Plus size={16} />
-            New task
-          </button>
         </div>
 
         {error && (
@@ -469,7 +456,7 @@ export default function EventTasksPage() {
 
         )}
 
-        <div className="mt-10 space-y-4">
+        <div className="mt-6 space-y-4">
 
           {tasks.length === 0 ? (
 
@@ -487,23 +474,7 @@ export default function EventTasksPage() {
 
               </p>
 
-              <button
-
-                type="button"
-
-                onClick={() =>
-
-                  setTaskModalOpen(true)
-
-                }
-
-                className="mt-6 rounded-xl bg-[#0F2B5B] px-6 py-3 font-semibold !text-white transition hover:bg-[#173B78] hover:!text-white"
-
-              >
-
-                Create task
-
-              </button>
+              
 
             </div>
 
