@@ -6,7 +6,6 @@ import {
   CalendarDays,
   CheckCircle2,
   MapPin,
-  Sparkles,
   XCircle,
 } from "lucide-react";
 
@@ -192,7 +191,11 @@ export default function PublicRSVPPage() {
           </p>
 
           <div className="mt-8 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#98A2B3]">
-            <Sparkles size={14} />
+            <img
+              src="/brand/planora-mark.png"
+              alt=""
+              className="h-4 w-4 object-contain"
+            />
             Planora
           </div>
         </div>
@@ -228,8 +231,12 @@ export default function PublicRSVPPage() {
 
       <div className="relative z-10 mx-auto max-w-3xl">
         <div className="text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-[#E7C875] backdrop-blur-md">
-            <Sparkles size={20} />
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-white/15 bg-white/10 backdrop-blur-md">
+            <img
+              src="/brand/planora-mark.png"
+              alt="Planora"
+              className="h-10 w-10 object-contain"
+            />
           </div>
 
           <p className="mt-5 text-xs font-bold uppercase tracking-[0.24em] text-[#E7C875]">
@@ -375,7 +382,11 @@ export default function PublicRSVPPage() {
         </section>
 
         <div className="mt-7 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/45">
-          <Sparkles size={13} />
+          <img
+            src="/brand/planora-mark.png"
+            alt=""
+            className="h-4 w-4 object-contain"
+          />
           Invitation managed with Planora
         </div>
       </div>

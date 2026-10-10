@@ -8,7 +8,6 @@ import {
   ListTodo,
   Mail,
   Settings,
-  Sparkles,
   Store,
   TableProperties,
   Users,
@@ -76,8 +75,12 @@ export default function EventLayout({
               href="/dashboard"
               className="flex items-center gap-3"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#08172F] text-white">
-                <Sparkles size={18} />
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#08172F]">
+                <img
+                  src="/brand/planora-mark.png"
+                  alt="Planora"
+                  className="h-8 w-8 object-contain"
+                />
               </div>
 
               <div>
