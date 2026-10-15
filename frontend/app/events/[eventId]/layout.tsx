@@ -109,22 +109,26 @@ export default function EventLayout({
                   <Link
                     key={item.label}
                     href={item.href}
-                    className={`group flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-semibold transition ${
+                    className={`group flex items-center gap-3 rounded-xl border px-3.5 py-3 text-sm font-semibold transition ${
                       active
-                        ? "bg-[#0F2B5B] !text-white hover:!text-white"
-                        : "!text-[#667085] hover:bg-[#eef3fb] hover:!text-[#1D4ED8]"
+                        ? "border-[#0F2B5B] bg-[#0F2B5B] !text-white shadow-sm hover:border-[#173B78] hover:bg-[#173B78] hover:!text-white"
+                        : "border-transparent !text-[#667085] hover:border-[#d9e2ef] hover:bg-[#eef3fb] hover:!text-[#1D4ED8]"
                     }`}
                   >
                     <Icon
                       size={18}
                       className={
-                        active ? "!text-white" : ""
+                        active
+                          ? "!text-white group-hover:!text-white"
+                          : "group-hover:!text-[#1D4ED8]"
                       }
                     />
 
                     <span
                       className={
-                        active ? "!text-white" : ""
+                        active
+                          ? "!text-white group-hover:!text-white"
+                          : "group-hover:!text-[#1D4ED8]"
                       }
                     >
                       {item.label}
@@ -138,7 +142,7 @@ export default function EventLayout({
           <div className="mt-auto p-4">
             <Link
               href="/dashboard"
-              className="block rounded-xl border border-[#e1e7f0] bg-[#fbfcff] px-4 py-3 text-sm font-semibold !text-[#0F2B5B] transition hover:bg-[#eef3fb]"
+              className="block rounded-xl border border-[#e1e7f0] bg-[#fbfcff] px-4 py-3 text-sm font-semibold !text-[#0F2B5B] transition hover:border-[#cad5e5] hover:bg-[#eef3fb]"
             >
               Back to all events
             </Link>
