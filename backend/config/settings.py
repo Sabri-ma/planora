@@ -1,3 +1,4 @@
+
 from pathlib import Path
 
 from decouple import config
@@ -19,8 +20,12 @@ DEBUG = config(
 )
 
 ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
+    host.strip()
+    for host in config(
+        "ALLOWED_HOSTS",
+        default="127.0.0.1,localhost",
+    ).split(",")
+    if host.strip()
 ]
 
 
@@ -76,17 +81,9 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
-                (
-                    "django.template.context_processors.request"
-                ),
-                (
-                    "django.contrib.auth."
-                    "context_processors.auth"
-                ),
-                (
-                    "django.contrib.messages."
-                    "context_processors.messages"
-                ),
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -119,6 +116,12 @@ DATABASES = {
             "DB_PORT",
             default="5432",
         ),
+        "OPTIONS": {
+            "sslmode": config(
+                "DB_SSLMODE",
+                default="prefer",
+            ),
+        },
     }
 }
 
@@ -131,29 +134,25 @@ AUTH_USER_MODEL = "accounts.User"
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": (
-            "django.contrib.auth."
-            "password_validation."
+            "django.contrib.auth.password_validation."
             "UserAttributeSimilarityValidator"
         ),
     },
     {
         "NAME": (
-            "django.contrib.auth."
-            "password_validation."
+            "django.contrib.auth.password_validation."
             "MinimumLengthValidator"
         ),
     },
     {
         "NAME": (
-            "django.contrib.auth."
-            "password_validation."
+            "django.contrib.auth.password_validation."
             "CommonPasswordValidator"
         ),
     },
     {
         "NAME": (
-            "django.contrib.auth."
-            "password_validation."
+            "django.contrib.auth.password_validation."
             "NumericPasswordValidator"
         ),
     },
@@ -196,21 +195,18 @@ REST_FRAMEWORK = {
             "authentication.JWTAuthentication"
         ),
     ],
-
     "DEFAULT_PERMISSION_CLASSES": [
         (
             "rest_framework.permissions."
             "IsAuthenticated"
         ),
     ],
-
     "DEFAULT_FILTER_BACKENDS": [
         (
             "django_filters.rest_framework."
             "DjangoFilterBackend"
         ),
     ],
-
     "DEFAULT_SCHEMA_CLASS": (
         "drf_spectacular.openapi.AutoSchema"
     ),
@@ -230,12 +226,41 @@ SPECTACULAR_SETTINGS = {
 
 # Frontend CORS
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
+    origin.strip()
+    for origin in config(
+        "CORS_ALLOWED_ORIGINS",
+        default=(
+            "http://localhost:3000,"
+            "http://127.0.0.1:3000"
+        ),
+    ).split(",")
+    if origin.strip()
 ]
 
 
+# CSRF trusted origins
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
+    origin.strip()
+    for origin in config(
+        "CSRF_TRUSTED_ORIGINS",
+        default=(
+            "http://localhost:3000,"
+            "http://127.0.0.1:3000"
+        ),
+    ).split(",")
+    if origin.strip()
 ]
+
+
+# Production security
+if not DEBUG:
+    SECURE_SSL_REDIRECT = config(
+        "SECURE_SSL_REDIRECT",
+        default=True,
+        cast=bool,
+    )
+
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = "DENY"
